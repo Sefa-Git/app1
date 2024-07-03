@@ -9,7 +9,7 @@ export default function App() {
   return (
     <LinearGradient colors={['#992c51','#eeb32c']} style={styles.rootScreen}>
       <ImageBackground 
-      source={require('./assets/image.jpg')}
+      source={require('./assets/icon.png')}
       resizeMode="cover"
       style={styles.rootScreen}
       imageStyle={styles.backgroundImage}
