@@ -1,58 +1,87 @@
-import {  View , StyleSheet, Text} from "react-native";
-import {useState} from 'react';
+import {  View , StyleSheet, Alert} from "react-native";
+import {useState, useEffect} from 'react';
+import {} from '@expo/vector-icons';
 
 import Title from "../components/ui/Title";
-import Colors from "../constants/Color";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import InstructionText from "../components/ui/InstructionText";
+import Card from "../components/ui/Card";
 
-    function generateRandomBetween(min,max, exclude){
-        const rndNum = Math.floor(Math.random() *(max-min))+min;
 
-        if(rndNum === exclude){
-            return generateRandomBetween(min,max,exclude);
-        } else {
-            return rndNum;
-        }
+function generateRandomBetween(min,max, exclude){
+    const rndNum = Math.floor(Math.random() *(max-min))+min;
+    
+    if(rndNum === exclude){
+        return generateRandomBetween(min,max,exclude);
+    } else {    
+        return rndNum;
     }
-
+}
     let minBoundery  = 1;
     let maxBoundery  = 100;
 
-function GameScreen({userNumber}){
-    
-    function nextGuessHandler(moreOrLess){
+    function GameScreen({userNumber, onGameOver}){
+       
+    const initialGuess = generateRandomBetween(1, 100, userNumber)
+    const[currentGuess, setCurrentGuess] = useState(initialGuess);
 
-        if(moreOrLess === 'more'){
+
+    useEffect(() => {
+
+        if(currentGuess === userNumber){
+            
+            onGameOver();
+        }
+
+    }, [currentGuess,userNumber,onGameOver]);
+
+    function nextGuessHandler(moreOrLess){        
+        if(
+            (moreOrLess === 'less' && currentGuess < userNumber) ||
+            (moreOrLess === 'more' && currentGuess > userNumber)
+        ){
+            Alert.alert(
+                "Don't Lie!!",
+                'Lying is bad ',
+                [{text:'Sorry', style:'cancel'}]
+            );
+            return;
+        }
+
+        if(moreOrLess === 'more' ){
             minBoundery = currentGuess + 1;
-        }
+        }    
         else{
-            maxBoundery=currentGuess - 1;
-        }
+            maxBoundery=currentGuess;            
+        }    
+        
         const newRandNum = generateRandomBetween(minBoundery,maxBoundery ,currentGuess);
         setCurrentGuess(newRandNum);
         
-    }
-    const initialGuess = generateRandomBetween(1, 100, userNumber)
-    const[currentGuess, setCurrentGuess] = useState();
-
+    }    
 
     return (
         <View style={styles.screen}>
                     
                 <Title>Opponent's Guess</Title>
-                        <NumberContainer>{initialGuess}</NumberContainer>
+                        <NumberContainer>{currentGuess}</NumberContainer>
                     
-                    <View>
-                        <Text>Higher or Lower?</Text>
+                    <Card>
+                        <InstructionText >Higher or Lower</InstructionText>
 
-                        <View>
-                            <PrimaryButton onPress={nextGuessHandler.bind(this,'more')}>+</PrimaryButton>
-                            
-                            <PrimaryButton onPress={nextGuessHandler.bind('less')}>-</PrimaryButton>
+                        <View style={styles.buttonsContainer}>
+                            <View style={styles.buttonContainer}>
+                                <PrimaryButton onPress={nextGuessHandler.bind(this,'more')}>Higher</PrimaryButton>
+                            </View>
+                                
+                            <View style={styles.buttonContainer}>
+
+                                <PrimaryButton onPress={nextGuessHandler.bind(this,'less')}>Lower</PrimaryButton>
+                            </View>
                         </View>
                     
-                    </View>
+                    </Card>
 
                     {/*LOGS*/}
         </View>
@@ -76,24 +105,15 @@ const styles = StyleSheet.create({
         flexDirection:'column-reverse',
         alignItems:'center',
     },
-    numberTextContainer:{
-        fontSize:90,
-        color:Colors.gradiant_yellow,
-    },
-    topContainer:{
-        flex:5, 
-        justifyContent:'center',
-        flexDirection:'row',
-        alignItems:'flex-end',
-    },
-    bottomContainer:{
-        flex:8,
-    },
     buttonsContainer:{
         flexDirection:'row',
         marginTop:10,
-        
     },
+    buttonContainer:{
+        flex:1,
+        marginTop:10,
+    },
+    
     logList:{
         flex:1,
         borderColor:'blue', 
@@ -102,4 +122,5 @@ const styles = StyleSheet.create({
         marginHorizontal:4,
         
     },
+
 })
