@@ -60,6 +60,7 @@ function StartGameScreen({onPickNumber}) {
                 </View>
             </View>   
         </Card>
+        
     </View>
     )
 }

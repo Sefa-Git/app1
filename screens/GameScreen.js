@@ -1,4 +1,4 @@
-import {  View , StyleSheet, Alert} from "react-native";
+import {  FlatList, View , StyleSheet, Alert} from "react-native";
 import {useState, useEffect} from 'react';
 import {} from '@expo/vector-icons';
 
@@ -7,6 +7,7 @@ import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import InstructionText from "../components/ui/InstructionText";
 import Card from "../components/ui/Card";
+import LogItem from "../components/game/LogItem";
 
 
 function generateRandomBetween(min,max, exclude){
@@ -25,18 +26,23 @@ function generateRandomBetween(min,max, exclude){
        
     const initialGuess = generateRandomBetween(1, 100, userNumber)
     const[currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]);
+    
 
 
-    useEffect(() => {
-
-        if(currentGuess === userNumber){
-            
-            onGameOver();
+    useEffect(() => {// CHECK GAMEOVER
+        if(currentGuess === userNumber){        
+            onGameOver(guessRounds.length);
         }
 
     }, [currentGuess,userNumber,onGameOver]);
 
-    function nextGuessHandler(moreOrLess){        
+    useEffect(() => {// SET INITIAL BOUNDS
+        minBoundery=1;
+        maxBoundery=100;
+    },[])
+
+    function nextGuessHandler(moreOrLess){ // HANDLE GUESSING       
         if(
             (moreOrLess === 'less' && currentGuess < userNumber) ||
             (moreOrLess === 'more' && currentGuess > userNumber)
@@ -58,9 +64,9 @@ function generateRandomBetween(min,max, exclude){
         
         const newRandNum = generateRandomBetween(minBoundery,maxBoundery ,currentGuess);
         setCurrentGuess(newRandNum);
-        
+        setGuessRounds( prevGuessRounds => [newRandNum,...prevGuessRounds]);
     }    
-
+    const geussRoundsListLength = guessRounds.length;
     return (
         <View style={styles.screen}>
                     
@@ -83,7 +89,15 @@ function generateRandomBetween(min,max, exclude){
                     
                     </Card>
 
-                    {/*LOGS*/}
+                    <View style={styles.logList} >
+                    
+                        <FlatList 
+                            data={guessRounds}  
+                            renderItem={(itemData) => <LogItem guessCount={geussRoundsListLength - itemData.index} >{itemData.item}</LogItem>}
+                            keyExtractor={(item) => item}
+                        />
+                        
+                    </View>
         </View>
     )
 
@@ -94,9 +108,8 @@ export default GameScreen;
 const styles = StyleSheet.create({
     screen:{
         flex:1,
-        padding:24,
-        borderColor:'white',
-        borderWidth:2,
+        paddingTop:24,
+        paddingHorizontal:24,
     },
     numberContainer:{
         height: 150,
@@ -114,13 +127,10 @@ const styles = StyleSheet.create({
         marginTop:10,
     },
     
-    logList:{
+    logList:{        
+        marginTop:10,
+        marginHorizontal:4,    
         flex:1,
-        borderColor:'blue', 
-        borderWidth:2,
-        marginTop:5,
-        marginHorizontal:4,
-        
     },
-
+   
 })

@@ -2,11 +2,11 @@ import {Text, StyleSheet} from 'react-native';
 
 import Colors from '../../constants/Color';
 
-function Title({props,children}){
+function Title({props,children, style}){
     
 
     return(
-        <Text style={styles.title}>{children}</Text>
+        <Text style={[styles.title,style]}>{children}</Text>
     )
 }
 
