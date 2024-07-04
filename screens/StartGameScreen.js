@@ -1,7 +1,10 @@
 import {useState} from 'react';
-import { TextInput,View,StyleSheet,Alert} from "react-native";
+import { TextInput,View,Text,StyleSheet,Alert} from "react-native";
 
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from '../components/ui/Title';
+import Card from '../components/ui/Card';
+import InstructionText from '../components/ui/InstructionText';
 import Colors from '../constants/Color';
 
 function StartGameScreen({onPickNumber}) {
@@ -15,7 +18,8 @@ function StartGameScreen({onPickNumber}) {
     function confirmInputHandler(){
     
         const chosenNumber = parseInt(enteredNumber);
-        
+
+
         if ( isNaN(chosenNumber) || chosenNumber <=0 || chosenNumber > 99 ) {
             Alert.alert(
                 'Invalidnumber',
@@ -24,7 +28,6 @@ function StartGameScreen({onPickNumber}) {
             )
             return;
         }
-
         onPickNumber(chosenNumber);
    }
 
@@ -32,7 +35,12 @@ function StartGameScreen({onPickNumber}) {
         setEnteredNumber('');
     }
     return(
-        <View style={styles.inputContainer}>
+    <View style={styles.rootContainer} >
+        <Title> Guess The Number</Title>
+        
+        <Card>
+            
+            <InstructionText>Enter A Number</InstructionText>
             <TextInput
              style={styles.numberInput}
              maxLength={2}
@@ -51,8 +59,8 @@ function StartGameScreen({onPickNumber}) {
                 <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>  
                 </View>
             </View>   
-        </View>
-
+        </Card>
+    </View>
     )
 }
 
@@ -60,16 +68,6 @@ export default StartGameScreen;
 
 const styles = StyleSheet.create({
 
-    inputContainer:{
-        justifyContent:'center',
-        alignItems:'center',
-        padding:16,
-        marginHorizontal:24,
-        marginTop:100, 
-        backgroundColor: Colors.panel_purple,
-        borderRadius:8,
-        elevation: 15, 
-    },
     numberInput:{
         height:50,
         width:60,
@@ -86,5 +84,11 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
         flex:1,
-    }
+    },
+    rootContainer:{
+        flex:1,
+        marginTop:100,
+        alignItems:'center',
+    },
+    
 })

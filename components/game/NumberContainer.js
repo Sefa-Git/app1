@@ -2,6 +2,7 @@ import { View,Text, StyleSheet } from "react-native";
 
 import Colors from "../../constants/Color";
 
+
 function NumberContainer({children}){
     return(
         <View style={styles.numberContainer} >
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
     },
     textStyle:{
         fontSize:40,
-        fontWeight:'bold',
         color: Colors.gradiant_yellow,
+        fontFamily:'open-sans-bold',
     }
 
 })
