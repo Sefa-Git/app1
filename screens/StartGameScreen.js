@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { TextInput,View,Text,StyleSheet,Alert} from "react-native";
+import { TextInput,View,Dimensions,StyleSheet,Alert} from "react-native";
 
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from '../components/ui/Title';
@@ -67,6 +67,8 @@ function StartGameScreen({onPickNumber}) {
 
 export default StartGameScreen;
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
     numberInput:{
@@ -88,8 +90,8 @@ const styles = StyleSheet.create({
     },
     rootContainer:{
         flex:1,
-        marginTop:100,
-        alignItems:'center',
+        marginTop: 100,
+        alignItems:'center', 
     },
     
 })

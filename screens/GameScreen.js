@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:4,
         flexDirection:'column-reverse',
         alignItems:'center',
+        
     },
     buttonsContainer:{
         flexDirection:'row',

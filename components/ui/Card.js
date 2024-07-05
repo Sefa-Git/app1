@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import {Dimensions, StyleSheet, View } from "react-native";
 
 import Colors from "../../constants/Color";
 
@@ -13,6 +13,9 @@ return(
 
 export default Card;
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
     card:{
         justifyContent:'center',
@@ -23,6 +26,5 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.panel_purple,
         borderRadius:8,
         elevation: 15, 
-        
     },
 })
